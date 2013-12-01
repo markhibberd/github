@@ -4,6 +4,7 @@ module Github.Issues.Events (
  eventsForIssue
 ,eventsForRepo
 ,event
+,events
 ,module Github.Data
 ) where
 
@@ -30,3 +31,10 @@ eventsForRepo user reqRepoName =
 event :: String -> String -> Int -> IO (Either Error Event)
 event user reqRepoName reqEventId =
   githubGet ["repos", user, reqRepoName, "issues", "events", show reqEventId]
+
+-- | List public events
+--
+-- > events
+events :: IO (Either Error [Event])
+events =
+  githubGet ["events"]
