@@ -13,7 +13,7 @@ main = do
 
 formatEvent event =
   "Issue #" ++ issueNumber event ++ ": " ++
-    formatEvent' event (Github.eventType event)
+    formatEvent' event (Github.repositoryEventType event)
   where
   formatEvent' event Github.Closed =
     "closed on " ++ createdAt event ++ " by " ++ loginName event ++
@@ -35,7 +35,7 @@ formatEvent event =
   formatEvent' event Github.Assigned =
     "assigned to " ++ loginName event ++ " on " ++ createdAt event
 
-loginName = Github.githubOwnerLogin . Github.eventActor
-createdAt = show . Github.fromGithubDate . Github.eventCreatedAt
-withCommitId event f = maybe "" f (Github.eventCommitId event)
-issueNumber = show . Github.issueNumber . fromJust . Github.eventIssue
+loginName = Github.githubOwnerLogin . Github.repositoryEventActor
+createdAt = show . Github.fromGithubDate . Github.repositoryEventCreatedAt
+withCommitId event f = maybe "" f (Github.repositoryEventCommitId event)
+issueNumber = show . Github.issueNumber . fromJust . Github.repositoryEventIssue

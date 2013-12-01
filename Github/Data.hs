@@ -67,6 +67,8 @@ instance FromJSON GitCommit where
 
 instance FromJSON GithubOwner where
   parseJSON (Object o)
+    | o `at` "login" == Nothing =
+      return AnonymousUser
     | o `at` "gravatar_id" == Nothing =
       GithubOrganization <$> o .: "avatar_url"
                  <*> o .: "login"
@@ -285,15 +287,24 @@ instance FromJSON IssueComment where
 instance FromJSON Event where
   parseJSON (Object o) =
     Event <$> o .: "actor"
-          <*> o .: "event"
-          <*> o .:? "commit_id"
-          <*> o .: "url"
+          <*> o .: "type"
+          <*> o .: "payload"
           <*> o .: "created_at"
           <*> o .: "id"
-          <*> o .:? "issue"
   parseJSON _          = fail "Could not build an Event"
 
-instance FromJSON EventType where
+instance FromJSON RepositoryEvent where
+  parseJSON (Object o) =
+    RepositoryEvent <$> o .: "actor"
+                    <*> o .: "event"
+                    <*> o .:? "commit_id"
+                    <*> o .: "url"
+                    <*> o .: "created_at"
+                    <*> o .: "id"
+                    <*> o .:? "issue"
+  parseJSON _          = fail "Could not build a Repository Event"
+
+instance FromJSON RepositoryEventType where
   parseJSON (String "closed") = pure Closed
   parseJSON (String "reopened") = pure Reopened
   parseJSON (String "subscribed") = pure Subscribed
@@ -302,7 +313,7 @@ instance FromJSON EventType where
   parseJSON (String "mentioned") = pure Mentioned
   parseJSON (String "assigned") = pure Assigned
   parseJSON (String "unsubscribed") = pure Unsubscribed
-  parseJSON _ = fail "Could not build an EventType"
+  parseJSON _ = fail "Could not build a RepositoryEventType"
 
 instance FromJSON SimpleOrganization where
   parseJSON (Object o) =
@@ -535,6 +546,7 @@ obj `values` key =
 
 -- | Produce the value for the last key by traversing.
 (<.:>) :: (FromJSON v) => Object => [T.Text] -> Parser v
+_   <.:> [] = fail "empty key value pair"
 obj <.:> [key] = obj .: key
 obj <.:> (key:keys) =
   let (Object nextObj) = findWithDefault (Object Map.empty) key obj in

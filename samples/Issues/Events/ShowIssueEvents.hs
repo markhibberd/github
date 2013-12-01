@@ -11,7 +11,7 @@ main = do
          putStrLn "Issue #49:\n"
          putStrLn $ intercalate "\n" $ map formatEvent events
 
-formatEvent event = formatEvent' event (Github.eventType event)
+formatEvent event = formatEvent' event (Github.repositoryEventType event)
   where
   formatEvent' event Github.Closed =
     "Closed on " ++ createdAt event ++ " by " ++ loginName event ++
@@ -33,6 +33,6 @@ formatEvent event = formatEvent' event (Github.eventType event)
   formatEvent' event Github.Assigned =
     "Issue assigned to " ++ loginName event ++ " on " ++ createdAt event
 
-loginName = Github.githubOwnerLogin . Github.eventActor
-createdAt = show . Github.fromGithubDate . Github.eventCreatedAt
-withCommitId event f = maybe "" f (Github.eventCommitId event)
+loginName = Github.githubOwnerLogin . Github.repositoryEventActor
+createdAt = show . Github.fromGithubDate . Github.repositoryEventCreatedAt
+withCommitId event f = maybe "" f (Github.repositoryEventCommitId event)

@@ -4,6 +4,7 @@ module Github.Data.Definitions where
 
 import Data.Time
 import Data.Data
+import Data.Aeson.Types (Object)
 import qualified Control.Exception as E
 
 -- | Errors have been tagged according to their source, so you can more easily
@@ -67,7 +68,8 @@ data GithubOwner = GithubUser {
   ,githubOwnerLogin :: String
   ,githubOwnerUrl :: String
   ,githubOwnerId :: Int
-} deriving (Show, Data, Typeable, Eq, Ord)
+  }
+  | AnonymousUser deriving (Show, Data, Typeable, Eq, Ord)
 
 data GitUser = GitUser {
    gitUserName  :: String
@@ -255,8 +257,8 @@ data IssueComment = IssueComment {
   ,issueCommentId :: Int
 } deriving (Show, Data, Typeable, Eq, Ord)
 
--- | Data describing an @Event@.
-data EventType =
+-- | Data describing a @RepositoryEvent@.
+data RepositoryEventType =
     Mentioned     -- ^ The actor was @mentioned in an issue body.
   | Subscribed    -- ^ The actor subscribed to receive notifications for an issue.
   | Unsubscribed  -- ^ The issue was unsubscribed from by the actor.
@@ -267,15 +269,23 @@ data EventType =
   | Reopened      -- ^ The issue was reopened by the actor.
   deriving (Show, Data, Typeable, Eq, Ord)
 
+data RepositoryEvent = RepositoryEvent {
+   repositoryEventActor :: GithubOwner
+  ,repositoryEventType :: RepositoryEventType
+  ,repositoryEventCommitId :: Maybe String
+  ,repositoryEventUrl :: String
+  ,repositoryEventCreatedAt :: GithubDate
+  ,repositoryEventId :: Int
+  ,repositoryEventIssue :: Maybe Issue
+} deriving (Show, Data, Typeable, Eq, Ord)
+
 data Event = Event {
    eventActor :: GithubOwner
-  ,eventType :: EventType
-  ,eventCommitId :: Maybe String
-  ,eventUrl :: String
+  ,eventType :: String
+  ,eventPayload :: Object
   ,eventCreatedAt :: GithubDate
-  ,eventId :: Int
-  ,eventIssue :: Maybe Issue
-} deriving (Show, Data, Typeable, Eq, Ord)
+  ,eventId :: String
+} deriving (Show, Data, Typeable, Eq)
 
 data SimpleOrganization = SimpleOrganization {
    simpleOrganizationUrl :: String
