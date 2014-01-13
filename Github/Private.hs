@@ -117,7 +117,7 @@ doHttps reqMethod url auth body = do
                     , requestBody = reqBody
                     , requestHeaders = reqHeaders <>
                                        [("User-Agent", "github.hs/0.7.0")]
-                                       <> [("Accept", "application/vnd.github.preview")]
+                                       <> [("Accept", "application/vnd.github.cannonball-preview+json")]
                     , checkStatus = successOrMissing
                     }
       authRequest = getAuthRequest auth request

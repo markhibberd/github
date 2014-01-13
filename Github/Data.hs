@@ -520,6 +520,26 @@ instance FromJSON DetailedOwner where
                    <*> o .: "login"
   parseJSON _ = fail "Could not build a DetailedOwner"
 
+instance FromJSON Deployment where
+  parseJSON (Object o) = Deployment <$> o .: "id"
+                                    <*> o .: "sha"
+                                    <*> o .: "creator"
+                                    <*> o .: "payload"
+                                    <*> o .: "created_at"
+                                    <*> o .: "updated_at"
+                                    <*> o .: "description"
+  parseJSON _ = fail "Could not build a Deployment"
+
+instance FromJSON DeploymentStatus where
+  parseJSON (Object o) = DeploymentStatus <$> o .: "id"
+                                          <*> o .: "state"
+                                          <*> o .: "creator"
+                                          <*> o .: "payload"
+                                          <*> o .:? "target_url"
+                                          <*> o .: "created_at"
+                                          <*> o .: "updated_at"
+                                          <*> o .:? "description"
+  parseJSON _ = fail "Could not build a DeploymentStatus"
 
 -- | A slightly more generic version of Aeson's @(.:?)@, using `mzero' instead
 -- of `Nothing'.

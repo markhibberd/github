@@ -132,6 +132,7 @@ Library
                    Github.Repos,
                    Github.Repos.Collaborators,
                    Github.Repos.Commits,
+                   Github.Repos.Deployments,
                    Github.Repos.Forks,
                    Github.Repos.Watching,
                    Github.Repos.Starring,

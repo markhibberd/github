@@ -475,3 +475,24 @@ data DetailedOwner = DetailedUser {
   ,detailedOwnerHtmlUrl :: String
   ,detailedOwnerLogin :: String
 } deriving (Show, Data, Typeable, Eq, Ord)
+
+data Deployment = Deployment {
+   deploymentId :: Integer
+  ,deploymentSha :: String
+  ,deploymentCreator :: GithubOwner
+  ,deploymentPayload :: String
+  ,deploymentCreatedAt :: GithubDate
+  ,deploymentUpdatedAt :: GithubDate
+  ,deploymentDescription :: String
+} deriving (Show, Data, Typeable, Eq, Ord)
+
+data DeploymentStatus = DeploymentStatus {
+   deploymentStatusId :: Integer
+  ,deploymentStatusState :: String
+  ,deploymentStatusCreator :: GithubOwner
+  ,deploymentStatusPayload :: String
+  ,deploymentStatusTargetUrl :: Maybe String
+  ,deploymentStatusCreatedAt :: GithubDate
+  ,deploymentStatusUpdatedAt :: GithubDate
+  ,deploymentStatusDescription :: Maybe String
+} deriving (Show, Data, Typeable, Eq, Ord)
