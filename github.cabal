@@ -7,7 +7,7 @@ Name:                github
 -- The package version. See the Haskell package versioning policy
 -- (http://www.haskell.org/haskellwiki/Package_versioning_policy) for
 -- standards guiding when and how versions should be incremented.
-Version:             0.7.1
+Version:             0.8
 
 -- A short (one-line) description of the package.
 Synopsis:            Access to the Github API, v3.
@@ -143,7 +143,7 @@ Library
   -- Packages needed in order to build this package.
   Build-depends: base >= 4.0 && < 5.0,
                  time,
-                 aeson == 0.6.2.2,
+                 aeson >= 0.6.1.0,
                  attoparsec >= 0.10.3.0,
                  bytestring,
                  case-insensitive >= 0.4.0.4,
@@ -160,11 +160,11 @@ Library
                  data-default,
                  vector,
                  unordered-containers >= 0.2 && < 0.3
-  
+
   -- Modules not exported by this package.
   Other-modules:       Github.Private
-  
+
   -- Extra tools (e.g. alex, hsc2hs, ...) needed to build the source.
-  -- Build-tools:         
-  
+  -- Build-tools:
+
   GHC-Options: -Wall -fno-warn-orphans

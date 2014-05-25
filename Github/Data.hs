@@ -11,6 +11,7 @@ import Control.Applicative
 import Control.Monad
 import qualified Data.Text as T
 import Data.Aeson.Types
+import Data.Monoid
 import System.Locale (defaultTimeLocale)
 import qualified Data.Vector as V
 import qualified Data.HashMap.Lazy as Map
@@ -216,7 +217,7 @@ instance FromJSON Issue where
           <*> o .:? "assignee"
           <*> o .: "user"
           <*> o .: "title"
-          <*> o .: "pull_request"
+          <*> o .:? "pull_request"
           <*> o .: "url"
           <*> o .: "created_at"
           <*> o .: "body"

@@ -195,7 +195,7 @@ data Issue = Issue {
   ,issueAssignee :: Maybe GithubOwner
   ,issueUser :: GithubOwner
   ,issueTitle :: String
-  ,issuePullRequest :: PullRequestReference
+  ,issuePullRequest :: Maybe PullRequestReference
   ,issueUrl :: String
   ,issueCreatedAt :: GithubDate
   ,issueBody :: Maybe String
@@ -229,7 +229,7 @@ data Milestone = Milestone {
   ,milestoneOpenIssues :: Int
   ,milestoneNumber :: Int
   ,milestoneClosedIssues :: Int
-  ,milestoneDescription :: String
+  ,milestoneDescription :: Maybe String
   ,milestoneTitle :: String
   ,milestoneUrl :: String
   ,milestoneCreatedAt :: GithubDate

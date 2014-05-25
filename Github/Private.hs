@@ -14,7 +14,7 @@ import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy.Char8 as LBS
 import Network.HTTP.Types (Method, Status(..))
 import Network.HTTP.Conduit
-import Data.Conduit (ResourceT)
+-- import Data.Conduit (ResourceT)
 import qualified Control.Exception as E
 import Data.Maybe (fromMaybe)
 
@@ -104,9 +104,9 @@ githubAPI apimethod url auth body = do
              in Just (Data.List.takeWhile (/= '>') s')
         else Nothing
 
-doHttps :: Method -> String -> Maybe GithubAuth
-        -> Maybe (RequestBody (ResourceT IO))
-        -> IO (Either E.SomeException (Response LBS.ByteString))
+-- doHttps :: Method -> String -> Maybe GithubAuth
+--         -> Maybe (RequestBody (ResourceT IO))
+--         -> IO (Either E.SomeException (Response LBS.ByteString))
 doHttps reqMethod url auth body = do
   let reqBody = fromMaybe (RequestBodyBS $ BS.pack "") body
       reqHeaders = maybe [] getOAuth auth
@@ -117,8 +117,8 @@ doHttps reqMethod url auth body = do
                     , requestBody = reqBody
                     , responseTimeout = Just 20000000
                     , requestHeaders = reqHeaders <>
-                                       [("User-Agent", "github.hs/0.7.0")]
-                                       <> [("Accept", "application/vnd.github.v3+json")]
+                                       [("User-Agent", "github.hs/0.7.4")]
+                                       <> [("Accept", "application/vnd.github.preview")]
                     , checkStatus = successOrMissing
                     }
       authRequest = getAuthRequest auth request
